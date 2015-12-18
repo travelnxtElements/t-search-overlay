@@ -190,13 +190,6 @@ Polymer({
             value: false
         },
 
-        trigger: {
-            type: Boolean,
-            reflectToAttribute: true,
-            value: false,
-            observer:'_setValue'
-        },
-
         label: {
             type: String,
             reflectToAttribute: true,
@@ -218,14 +211,6 @@ Polymer({
                 function() {
                     component.hide = true
                 }, 300);
-        }
-    },
-
-    _setValue:function(){
-        if(this.hide){
-            this.value = 100;
-        }else{
-            this.value = 0;
         }
     },
 
