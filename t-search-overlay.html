@@ -86,11 +86,24 @@
             margin-top: 15px;
         }
         
-        .content-area::content h6 {
-            text-align: center;
-            display: inline!important;
+        .content-area::content .heading {
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+
+            -ms-flex-direction: row;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
         }
-        
+        .content-area::content .places {
+            -ms-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
         .progress {
             margin: 0;
             padding: 2px;
