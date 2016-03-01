@@ -4,6 +4,29 @@
 <link rel="import" href="../iron-icons/maps-icons.html">
 <link rel="import" href="../iron-icons/social-icons.html">
  
+<!--
+`t-search-overlay` is an interstetial or a wait page. Ideally while loading a long list of results.
+Theres a progress bar which runs with the value of timer. You can set the value to 100 to take the progress to 100 and hide the overlay.  
+There are two contents,  you can pass .data and .footer
+Example:
+	<t-search-overlay>
+		<div class="data">
+			<t-flight-header hide-modal></t-flight-header>
+		</div>
+		<div class="footer">
+			<img src="http://dev-capi.tavisca.com/NewUI/eva/Air/images/main-logo.png" alt="">
+		</div>
+	</t-search-overlay>
+### Styling
+  
+  * {
+    /* The background. */
+    --app-header-bg, #0e5398
+
+    /* Search overlay progress*/
+    --search-overlay-progress:#5d9cec
+  }
+-->
 <dom-module id="t-search-overlay">
     <template>
         <style>
@@ -41,47 +64,6 @@
             border-radius: 50%;
             padding: 10px;
         }
-        
-        /* .animated {
-            -webkit-animation-duration: 1s;
-            animation-duration: 1s;
-            -webkit-animation-fill-mode: both;
-            animation-fill-mode: both;
-            -webkit-animation-timing-function: linear;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-            -webkit-animation-iteration-count: infinite;
-        }
-        
-        @-webkit-keyframes pulse {
-            0% {
-                -webkit-transform: scale(1);
-            }
-            50% {
-                -webkit-transform: scale(1.1);
-            }
-            100% {
-                -webkit-transform: scale(1);
-            }
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-        
-        .pulse {
-            -webkit-animation-name: pulse;
-            animation-name: pulse;
-        } */
-        
         .content-area {
             margin-top: 15px;
         }
@@ -152,10 +134,6 @@
                         <div id="progressBar">
                         </div>
                     </div>
-                    <!-- <div class="loading-btm-text">
-                        Please wait .... Loading results
-                        Checking availability and price for your selected itinerary...
-                    </div> -->
                 </div>
             </div>
             <div class="layout horizontal center center-justified footer-area">
@@ -172,12 +150,20 @@ Polymer({
     properties: {
 
 
+
+      /**
+       * Put the icon you want to use as overlay.
+       */
         icon: {
             type: String,
             reflectToAttribute: true,
             value: 'maps:flight'
         },
 
+
+      /**
+       * Set to 100 to close the icon.
+       */
         value: {
             type: Number,
             reflectToAttribute: true,
@@ -185,17 +171,26 @@ Polymer({
             observer: '_progressAnimation'
         },
 
+
+      /**
+       * This is a boolean Which hides the icon when set to true.
+       * Note: Seting hide to true wont make the value 100
+       */
         hide: {
             type: Boolean,
             reflectToAttribute: true,
             value: false
         },
 
-        label: {
-            type: String,
-            reflectToAttribute: true,
-            value: 'Flight Search'
-        }
+	  /**
+		* Change the speed of the timer in milliseconds. 
+		* Increasing this will move the timer slower
+		*
+		*/
+		timer: {
+			type:Number,
+			value:500
+		}
 
     },
 
@@ -224,7 +219,7 @@ Polymer({
                     if (component.value < 90) {
                         component.value = component.value +1;
                     }
-                }, a * 500);
+                }, a * component.timer);
         }
     }
 });
