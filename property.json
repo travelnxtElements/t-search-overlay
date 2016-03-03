@@ -5,7 +5,7 @@
             "fields": {
             "icon": {
                 "name":"Icon",
-                "type": "string",
+                "type": "icon",
                 "value": "maps:flight"
             },
             "src": {
