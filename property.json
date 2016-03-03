@@ -1,22 +1,28 @@
 {
-    "name": "App header",
+    "name": "Interstetial",
     "properties": [{
         "name": "Properties",
             "fields": {
-            "label": {
-                "name":"Label",
+            "icon": {
+                "name":"Icon",
                 "type": "string",
-                "value": "New Section"
+                "value": "maps:flight"
             },
             "src": {
                 "name":"Image Source",
                 "type": "string",
                 "value": "http://dev-capi.tavisca.com/NewUI/eva/Air/images/main-logo.png"
             },
-            "logoUrl": {
-                "name":"Logo url",
-                "type": "string",
-                "value": "http://lorempixel.com/180/46"
+             "hide": {
+                "name": "Hide Interstetial",
+                "type": "boolean",
+                "value": false
+            },
+
+            "timer": {
+                "name":"Timer",
+                "type": "number",
+                "value": "500"
             }
         }
     }]
