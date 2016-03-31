@@ -46,8 +46,8 @@ Example:
             width: 100%;
             height: 100%;
             font-family: var(--header-font-family, --primary-font-family);
-            color: var(--light-color, #fff);
-            background: var(--app-header-bg, #0e5398);
+            color: var(--search-overlay-color, #fff);
+            background: var(--search-overlay-bg, #0e5398);
             z-index: 9;
         }
         
@@ -91,6 +91,8 @@ Example:
             position: absolute;
             left: 50%;
             transform:translateX(-50%);
+            
+            @apply(--search-overlay-progress-text);
         }
         #progressBar {
             height: 16px;
