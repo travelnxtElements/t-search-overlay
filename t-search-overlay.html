@@ -7,14 +7,14 @@
 Theres a progress bar which runs with the value of timer. You can set the value to 100 to take the progress to 100 and hide the overlay.  
 There are two contents,  you can pass .data and .footer
 Example:
-	<t-search-overlay>
-		<div class="data">
-			<t-flight-header hide-modal></t-flight-header>
-		</div>
-		<div class="footer">
-			<img src="http://dev-capi.tavisca.com/NewUI/eva/Air/images/main-logo.png" alt="">
-		</div>
-	</t-search-overlay>
+    <t-search-overlay>
+        <div class="data">
+            <t-flight-header hide-modal></t-flight-header>
+        </div>
+        <div class="footer">
+            <img src="http://dev-capi.tavisca.com/NewUI/eva/Air/images/main-logo.png" alt="">
+        </div>
+    </t-search-overlay>
 ### Styling
   
   * {
@@ -58,7 +58,7 @@ Example:
         iron-icon {
             width: 100px;
             height: 100px;
-            color:  var(--light-color, #fff);
+            color:  var(--search-overlay-icon-color, #fff);
             border-radius: 50%;
             padding: 10px;
         }
@@ -76,7 +76,8 @@ Example:
             margin: 0;
             padding: 2px;
             height: 26px;
-            border: 3px solid #ffffff;
+            border: 3px solid ;
+            border-color: var(--search-overlay-progress-border, #ffffff);
             border-radius: 12px;
             background: transparent;
             box-shadow: none;
@@ -91,13 +92,14 @@ Example:
             position: absolute;
             left: 50%;
             transform:translateX(-50%);
+            mix-blend-mode: difference;
             
             @apply(--search-overlay-progress-text);
         }
         #progressBar {
             height: 16px;
             border-radius: 12px;
-            background: var(--search-overlay-progress,#5d9cec);
+            background: var(--search-overlay-progress, #5d9cec);
             box-shadow: none;
             vertical-align: middle;
             transition: 0.3s ease width;
@@ -130,8 +132,8 @@ Example:
                         <content select=".data"></content>
                     </div>
                     <div class="progress">
-                        <span class="progressText"><span>{{value}}</span>%</span>
                         <div id="progressBar">
+                            <span class="progressText"><span>{{value}}</span>%</span>
                         </div>
                     </div>
                 </div>
@@ -162,7 +164,7 @@ Polymer({
 
 
       /**
-       * Set to 100 to close the icon.
+       * Set to 100 to close the overlay.
        */
         value: {
             type: Number,
@@ -182,15 +184,15 @@ Polymer({
             value: false
         },
 
-	  /**
-		* Change the speed of the timer in milliseconds. 
-		* Increasing this will move the timer slower
-		*
-		*/
-		timer: {
-			type:Number,
-			value:500
-		}
+      /**
+        * Change the speed of the timer in milliseconds. 
+        * Increasing this will move the timer slower
+        *
+        */
+        timer: {
+            type:Number,
+            value:500
+        }
 
     },
 
