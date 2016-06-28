@@ -1,130 +1,148 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html" />
 <link rel="import" href="../iron-dropdown/iron-dropdown-scroll-manager.html">
- 
+
 <!--
-`t-search-overlay` is an interstetial or a wait page. Ideally while loading a long list of results.
-Theres a progress bar which runs with the value of timer. You can set the value to 100 to take the progress to 100 and hide the overlay.  
-There are two contents,  you can pass .data and .footer
+`t-search-overlay` component is an overlay loader component. This component
+is meant to be used on waiting or interstitial pages. The component spans
+the whole page and goes out of view when it hidden by the application or
+the loading completes. The loading starts and ends automatically with property
+`timer` controlling the pace of loading. You can display your own markup above
+the loader and in the footer of the overlay.
+
 Example:
+
+    <t-search-overlay timer="1000"></t-search-overlay>
+
     <t-search-overlay>
         <div class="data">
-            <t-flight-header hide-modal></t-flight-header>
+            <h1>This is the Content area.</h1>
         </div>
         <div class="footer">
             <img src="http://dev-capi.tavisca.com/NewUI/eva/Air/images/main-logo.png" alt="">
         </div>
     </t-search-overlay>
-### Styling
-  
-  * {
-    /* The background. */
-    --app-header-bg, #0e5398
 
-    /* Search overlay progress*/
-    --search-overlay-progress:#5d9cec
-  }
+You can use classes `.data` and `.footer` to add content in the middle of the
+overlay and in the footer of it respectively.
+
+### Styling
+
+Custom property | Description | Default
+----------------|-------------|----------
+--header-font-family | The font to be used in the overlay | --primary-font-family
+--search-overlay-bg | The background color of the overlay | #0e5398
+--search-overlay-color | The text color in overlay | #fff
+--search-overlay-icon-color | The color of icons in overlay | #fff
+--search-overlay-progress | The color of completed area in loader | #5d9cec
+--search-overlay-progress-border | The border of the loader | #ffffff
+--search-overlay-progress-text | Mixin to be applied to the completion amount text | { }
 -->
+
 <dom-module id="t-search-overlay">
     <template>
-    <style include="iron-flex">
-        :host([hide]) {
-            -ms-transform: scale(0);
-            /* IE 9 */
-            -webkit-transform: scale(0);
-            /* Safari */
-            transition: 1s ease all;
-            transform: scale(0);
-        }
-        
-        :host {
-            display: block;
-            text-align: center;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            font-family: var(--header-font-family, --primary-font-family);
-            color: var(--search-overlay-color, #fff);
-            background: var(--search-overlay-bg, #0e5398);
-            z-index: 9;
-        }
-        
-        .overlay {
-            height: 100%;
-        }
-        
-        iron-icon {
-            width: 100px;
-            height: 100px;
-            color:  var(--search-overlay-icon-color, #fff);
-            border-radius: 50%;
-            padding: 10px;
-        }
-        .content-area {
-            margin-top: 15px;
-        }
-        
-        .content-area::content .heading {
-            margin-bottom: 10px;
-        }
-        .content-area::content .places {
-            display: block;
-        }
-        .progress {
-            padding: 2px;
-            margin: 5px 0 0;
-            height: 26px;
-            border: 3px solid ;
-            border-color: var(--search-overlay-progress-border, #ffffff);
-            border-radius: 12px;
-            background: transparent;
-            box-shadow: none;
-            width: 90vw;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-        .progressText{
-            font-size: 11px;
-            line-height: 16px;
-            position: absolute;
-            left: 50%;
-            transform:translateX(-50%);
-            mix-blend-mode: difference;
-            
-            @apply(--search-overlay-progress-text);
-        }
-        #progressBar {
-            height: 16px;
-            border-radius: 12px;
-            background: var(--search-overlay-progress, #5d9cec);
-            box-shadow: none;
-            vertical-align: middle;
-            transition: 0.3s ease width;
-        }
-        
-        .loading-btm-text {
-            font-size: 12px;
-            line-height: 16px;
-            font-weight: 300;
-            color: #5d9cec;
-            text-align: center;
-            margin-top: 5px;
-        }
-        
-        .footer-area {
-            padding: 15px 0 30px;
-        }
-        
-        .footer-area::content img {
-            max-width: 100%;
-        }
+        <style include="iron-flex">
+            :host([hide]) {
+                -ms-transform: scale(0);
+                -webkit-transform: scale(0);
+                transition: 1s ease all;
+                transform: scale(0);
+            }
+
+            :host {
+                display: block;
+                text-align: center;
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                font-family: var(--header-font-family, --primary-font-family);
+                color: var(--search-overlay-color, #fff);
+                background: var(--search-overlay-bg, #0e5398);
+                z-index: 9;
+            }
+
+            .overlay {
+                height: 100%;
+            }
+
+            iron-icon {
+                width: 100px;
+                height: 100px;
+                color: var(--search-overlay-icon-color, #fff);
+                border-radius: 50%;
+                padding: 10px;
+            }
+
+            .content-area {
+                margin-top: 15px;
+            }
+
+            .content-area::content .heading {
+                margin-bottom: 10px;
+            }
+
+            .content-area::content .places {
+                display: block;
+            }
+
+            .progress {
+                padding: 2px;
+                margin: 5px 0 0;
+                height: 26px;
+                border: 3px solid;
+                border-color: var(--search-overlay-progress-border, #ffffff);
+                border-radius: 12px;
+                background: transparent;
+                box-shadow: none;
+                width: 90vw;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+            .progressText {
+                font-size: 11px;
+                line-height: 16px;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                mix-blend-mode: difference;
+
+                @apply(--search-overlay-progress-text);
+            }
+
+            #progressBar {
+                height: 16px;
+                border-radius: 12px;
+                background: var(--search-overlay-progress, #5d9cec);
+                box-shadow: none;
+                vertical-align: middle;
+                transition: 0.3s ease width;
+            }
+
+            .loading-btm-text {
+                font-size: 12px;
+                line-height: 16px;
+                font-weight: 300;
+                color: #5d9cec;
+                text-align: center;
+                margin-top: 5px;
+            }
+
+            .footer-area {
+                padding: 15px 0 30px;
+            }
+
+            .footer-area::content img {
+                max-width: 100%;
+            }
         </style>
+
         <div class="layout vertical overlay">
             <div class="flex horizontal layout center center-justified">
-                <div class="layout vertical ">
+                <div class="layout vertical">
                     <div id="animated-example" class="animated pulse">
                         <iron-icon icon="{{icon}}"></iron-icon>
                     </div>
@@ -151,21 +169,22 @@ Polymer({
 
     properties: {
 
-
-
-      /**
-       * Put the icon you want to use as overlay.
-       */
+        /**
+         * The name of the icon to displayed on the overlay
+         * @type {String}
+         */
         icon: {
             type: String,
             reflectToAttribute: true,
             value: 'maps:flight'
         },
 
-
-      /**
-       * Set to 100 to close the overlay.
-       */
+        /**
+         * The value of completion in percentage. The loader fills up
+         * this much percent of its lenght. When the value becomes
+         * 100 then the overly is removed.
+         * @type {Number}
+         */
         value: {
             type: Number,
             reflectToAttribute: true,
@@ -174,54 +193,58 @@ Polymer({
         },
 
 
-      /**
-       * This is a boolean Which hides the icon when set to true.
-       * Note: Seting hide to true wont make the value 100
-       */
+        /**
+         * Toggles hiding or showing of the overlay. So the overlay
+         * can be hidden when value reaches 100 or when this property
+         * is explicitly made true.
+         * @type {Boolean}
+         */
         hide: {
             type: Boolean,
             reflectToAttribute: true,
             value: false
         },
 
-      /**
-        * Change the speed of the timer in milliseconds. 
-        * Increasing this will move the timer slower
-        *
-        */
+        /**
+         * This controls how fast the auto loading reaches completion
+         * i.e. 100. The higher the value earlier the loading completes.
+         * @type {Number}
+         */
         timer: {
-            type:Number,
-            value:500
+            type: Number,
+            value: 500
         }
-
     },
 
     ready: function() {
         this._progressAuto();
     },
-    
+
     _progressAnimation: function() {
-        this.$.progressBar.style.width = this.value + '%';
         var component = this;
+
+        this.$.progressBar.style.width = this.value + '%';
+
         if (this.value == 100) {
             Polymer.IronDropdownScrollManager.removeScrollLock(component);
-            setTimeout(
-                function() {
-                    component.hide = true
-                }, 300);
+
+            setTimeout(function() {
+                component.hide = true;
+            }, 300);
         }
     },
 
     _progressAuto: function() {
+        var component = this, a;
+
         Polymer.IronDropdownScrollManager.pushScrollLock(this);
-        var component = this;
+
         for (a = 0; a < 90; a++) {
-            setTimeout(
-                function() {
-                    if (component.value < 90) {
-                        component.value = component.value +1;
-                    }
-                }, a * component.timer);
+            setTimeout(function() {
+                if (component.value < 90) {
+                    component.value = component.value + 1;
+                }
+            }, a * component.timer);
         }
     }
 });
