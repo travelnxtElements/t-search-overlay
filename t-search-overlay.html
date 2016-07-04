@@ -42,11 +42,10 @@ Custom property | Description | Default
 <dom-module id="t-search-overlay">
     <template>
         <style include="iron-flex">
-            :host([hide]) {
-                -ms-transform: scale(0);
-                -webkit-transform: scale(0);
-                transition: 1s ease all;
-                transform: scale(0);
+            :host([active]) {
+                -ms-transform: scale(1);
+                -webkit-transform: scale(1);
+                transform: scale(1);
             }
 
             :host {
@@ -61,6 +60,10 @@ Custom property | Description | Default
                 color: var(--search-overlay-color, #fff);
                 background: var(--search-overlay-bg, #0e5398);
                 z-index: 9;
+                -ms-transform: scale(0);
+                -webkit-transform: scale(0);
+                transition: 1s ease all;
+                transform: scale(0);
             }
 
             .overlay {
@@ -194,12 +197,9 @@ Polymer({
 
 
         /**
-         * Toggles hiding or showing of the overlay. So the overlay
-         * can be hidden when value reaches 100 or when this property
-         * is explicitly made true.
-         * @type {Boolean}
+         * Set this to true to start the overlay
          */
-        hide: {
+        active: {
             type: Boolean,
             reflectToAttribute: true,
             value: false
@@ -215,26 +215,23 @@ Polymer({
             value: 500
         }
     },
-
-    ready: function() {
-        this._progressAuto();
-    },
-
+    observers:['progressAuto(active)'],
+    
     _progressAnimation: function() {
         var component = this;
 
         this.$.progressBar.style.width = this.value + '%';
 
         if (this.value == 100) {
-            Polymer.IronDropdownScrollManager.removeScrollLock(component);
 
             setTimeout(function() {
-                component.hide = true;
+                component.active = false;
+                Polymer.IronDropdownScrollManager.removeScrollLock(component);
             }, 300);
         }
     },
 
-    _progressAuto: function() {
+    progressAuto: function() {
         var component = this, a;
 
         Polymer.IronDropdownScrollManager.pushScrollLock(this);
