@@ -234,7 +234,9 @@ Polymer({
     progressAuto: function() {
         var component = this, a;
 
-        Polymer.IronDropdownScrollManager.pushScrollLock(this);
+        //this line was creating problem of page load!!!!!!!
+        //re factor this!
+        //Polymer.IronDropdownScrollManager.pushScrollLock(this);
 
         for (a = 0; a < 90; a++) {
             setTimeout(function() {
