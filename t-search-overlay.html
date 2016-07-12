@@ -91,8 +91,8 @@ Custom property | Description | Default
             }
 
             .progress {
-                padding: 2px;
                 margin: 10px auto;
+                padding:2px;
                 height: 26px;
                 border: 3px solid;
                 border-color: var(--search-overlay-progress-border, #ffffff);
@@ -103,8 +103,13 @@ Custom property | Description | Default
                 -webkit-box-sizing: border-box;
                 -moz-box-sizing: border-box;
                 box-sizing: border-box;
+                overflow:hidden;
             }
-
+            .wrapper{
+                padding: 0 2px;
+                overflow: hidden;
+                margin-left: 2px;
+            }
             .progressText {
                 font-size: 11px;
                 line-height: 16px;
@@ -112,13 +117,16 @@ Custom property | Description | Default
                 left: 50%;
                 transform: translateX(-50%);
                 mix-blend-mode: difference;
-
+                z-index:1;
                 @apply(--search-overlay-progress-text);
             }
 
             #progressBar {
                 height: 16px;
+                width:100%;
                 border-radius: 12px;
+                transition: 0.3s ease transform;
+                will-change: transform;
                 background: var(--search-overlay-progress, #5d9cec);
                 box-shadow: none;
                 vertical-align: middle;
@@ -153,8 +161,10 @@ Custom property | Description | Default
                         <content select=".data"></content>
                     </div>
                     <div class="progress">
-                        <div id="progressBar">
                             <span class="progressText"><span>{{value}}</span>%</span>
+                        <div class="wrapper">
+                            <div id="progressBar">
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -220,7 +230,7 @@ Polymer({
     _progressAnimation: function() {
         var component = this;
 
-        this.$.progressBar.style.width = this.value + '%';
+        this.$.progressBar.style.transform = 'translateX(' + (this.value -100) + '%)';
 
         if (this.value == 100) {
 
@@ -232,19 +242,14 @@ Polymer({
     },
 
     progressAuto: function() {
-        var component = this, a;
+        var component = this;
 
-        //this line was creating problem of page load!!!!!!!
-        //re factor this!
-        //Polymer.IronDropdownScrollManager.pushScrollLock(this);
-
-        for (a = 0; a < 90; a++) {
-            setTimeout(function() {
-                if (component.value < 90) {
-                    component.value = component.value + 1;
-                }
-            }, a * component.timer);
-        }
+        requestAnimationFrame(function changeValue() {
+            if (component.value < 90) {
+                component.value++;
+                setTimeout(requestAnimationFrame.bind(null, changeValue), component.timer);
+            }
+        });
     }
 });
 </script>
